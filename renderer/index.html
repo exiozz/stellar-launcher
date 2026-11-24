@@ -1,0 +1,926 @@
+<!doctype html>
+<html lang="fr" data-theme="console">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; img-src 'self' data: https://*.rbxcdn.com https://devforum-uploads.s3.dualstack.us-east-2.amazonaws.com; style-src 'self' 'unsafe-inline'; script-src 'self'" />
+  <title>Stellar</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  
+  <div class="stars" aria-hidden="true"></div>
+
+  <header class="titlebar">
+    <div class="brand">
+      <img class="logo" src="logo.png" alt="" />
+      <span class="brand-name">Stellar</span>
+    </div>
+    <div class="titlebar-status" id="titleStatus"></div>
+    <div class="win-btns">
+      <button data-win="min" aria-label="Réduire"><svg viewBox="0 0 12 12"><path d="M2 6h8"/></svg></button>
+      <button data-win="max" aria-label="Agrandir"><svg viewBox="0 0 12 12"><rect x="2.5" y="2.5" width="7" height="7" rx="1"/></svg></button>
+      <button data-win="close" class="close" aria-label="Fermer"><svg viewBox="0 0 12 12"><path d="M3 3l6 6M9 3l-6 6"/></svg></button>
+    </div>
+  </header>
+
+  <div class="shell">
+    <!-- ============ ICON RAIL (Discord-style) ============ -->
+    <nav class="sidebar" aria-label="Navigation">
+      <button class="nav-item nav-home active" data-view="home" data-label="Accueil"><img class="rail-logo" src="logo.png" alt="Accueil" /></button>
+      <div class="rail-sep"></div>
+      <button class="nav-item" data-view="discover" data-label="Découvrir"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path class="ic2" d="m15.5 8.5-2.2 4.8-4.8 2.2 2.2-4.8z"/><circle class="ic2" cx="12" cy="12" r=".6"/></svg></button>
+      <button class="nav-item" data-view="news" data-label="Nouveautés"><svg class="ic" viewBox="0 0 24 24"><path d="M4 10.5v3a1.5 1.5 0 0 0 1.5 1.5H7l6 4V5L7 9H5.5A1.5 1.5 0 0 0 4 10.5z"/><path d="m7.5 15 1.2 4.5"/><path class="ic2" d="M16.5 9.5a3.5 3.5 0 0 1 0 5M19 7a7 7 0 0 1 0 10"/></svg><span class="badge" id="newsBadge" hidden>!</span></button>
+      <button class="nav-item" data-view="catalog" data-label="Catalogue"><svg class="ic" viewBox="0 0 24 24"><path d="M8.5 4 4 6.5l1.8 4L8 9.6V20h8V9.6l2.2.9 1.8-4L15.5 4"/><path class="ic2" d="M8.5 4a3.5 3.5 0 0 0 7 0"/></svg></button>
+      <button class="nav-item" data-view="friends" data-label="Amis"><svg class="ic" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.3"/><path d="M3 19.5c.6-3.4 3-5.5 6-5.5s5.4 2.1 6 5.5"/><circle class="ic2" cx="17" cy="9" r="2.4"/><path class="ic2" d="M16.5 14c2.5 0 4.2 1.6 4.6 4.3"/></svg><span class="badge" id="requestBadge" hidden>0</span></button>
+      <button class="nav-item" data-view="messages" data-label="Messages"><svg class="ic" viewBox="0 0 24 24"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v7a2.5 2.5 0 0 1-2.5 2.5H10l-4.5 4v-4h0A1.5 1.5 0 0 1 4 14.5z"/><path class="ic2" d="M8.5 10h.01M12 10h.01M15.5 10h.01"/></svg><span class="badge" id="msgBadge" hidden>0</span></button>
+      <button class="nav-item" data-view="trading" data-label="Trading"><svg class="ic" viewBox="0 0 24 24"><path d="M4 8h13l-3.5-3.5"/><path class="ic2" d="M20 16H7l3.5 3.5"/></svg></button>
+      <button class="nav-item" data-view="community" data-label="Communauté"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="7.5" r="3"/><path d="M6.5 19c.6-3 2.8-5 5.5-5s4.9 2 5.5 5"/><circle class="ic2" cx="5" cy="10" r="2"/><circle class="ic2" cx="19" cy="10" r="2"/></svg></button>
+      <button class="nav-item" data-view="players" data-label="Joueurs"><svg class="ic" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6"/><path class="ic2" d="m15 15 5 5"/><path class="ic2" d="M8 9a3 3 0 0 1 2.5-1.5"/></svg></button>
+      <div class="rail-sep"></div>
+      <button class="nav-item" data-view="mods" data-label="Mods"><svg class="ic" viewBox="0 0 24 24"><path d="M11 3.5 12.7 8l4.5 1.7-4.5 1.7L11 16l-1.7-4.6L4.8 9.7 9.3 8z"/><path class="ic2" d="m18 14 .9 2.1 2.1.9-2.1.9L18 20l-.9-2.1-2.1-.9 2.1-.9z"/></svg></button>
+      <button class="nav-item" data-view="filters" data-label="Filtres"><svg class="ic" viewBox="0 0 24 24"><circle cx="9" cy="9.5" r="5"/><circle cx="15" cy="9.5" r="5"/><circle class="ic2" cx="12" cy="14.5" r="5"/></svg></button>
+      <button class="nav-item" data-view="instances" data-label="Instances"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="4" width="13" height="10" rx="2"/><path class="ic2" d="M8 18h10a2 2 0 0 0 2-2V9"/><path d="M6.5 17h0"/></svg><span class="badge" id="instBadge" hidden>0</span></button>
+      <button class="nav-item" data-view="accounts" data-label="Comptes"><svg class="ic" viewBox="0 0 24 24"><circle cx="10" cy="8" r="3.3"/><path d="M4 19.5c.6-3.4 3-5.5 6-5.5 1.6 0 3 .5 4 1.5"/><path class="ic2" d="M18 13v6M15 16h6"/></svg></button>
+      <div class="rail-spacer"></div>
+      <div class="account-wrap rail-account">
+        <button class="account" id="accountBox" aria-haspopup="menu"></button>
+        <div class="account-menu" id="accountMenu" role="menu" hidden></div>
+      </div>
+      <button class="nav-item" data-view="settings" data-label="Paramètres"><svg class="ic" viewBox="0 0 24 24"><path d="M4 7h9M19 7h1M4 17h3M13 17h7"/><circle class="ic2" cx="16" cy="7" r="2.2"/><circle class="ic2" cx="10" cy="17" r="2.2"/></svg></button>
+    </nav>
+
+    <!-- ============ SIDE COLUMN ============ -->
+    <aside class="side">
+      <div class="side-head">
+        <span class="side-title">Stellar</span>
+        <span class="side-sub" id="robloxState">Détection de Roblox…</span>
+      </div>
+      <div class="side-scroll">
+        <div class="side-section">Joué récemment</div>
+        <div id="quickGames"><div class="side-empty">Tes derniers jeux apparaîtront ici.</div></div>
+        <div class="side-section">Favoris</div>
+        <div id="quickFavs"><div class="side-empty">Ajoute un jeu en favori avec ☆.</div></div>
+      </div>
+
+      <div class="mini-player" id="miniPlayer" hidden>
+        <div class="mini-cover" id="miniCover"></div>
+        <div class="mini-meta"><div class="mini-title" id="miniTitle"></div><div class="mini-artist" id="miniArtist"></div></div>
+        <button class="mini-btn" data-mcmd="toggle" id="miniToggle" aria-label="Lecture / pause"><svg viewBox="0 0 24 24"><path d="M7 4v16l13-8z"/></svg></button>
+        <button class="mini-btn" data-mcmd="next" aria-label="Suivant"><svg viewBox="0 0 24 24"><path d="m5 4 10 8-10 8z"/><path d="M19 5v14"/></svg></button>
+      </div>
+
+      <div class="user-panel">
+        <div class="fps-chip" id="fpsChip" title="FPS max de Roblox"><span class="fps-num">—</span><span class="fps-lbl">FPS</span></div>
+      </div>
+    </aside>
+
+    <!-- ============ MAIN ============ -->
+    <main class="content" id="content">
+      <!-- HOME -->
+      <section class="view active" id="view-home">
+        <div class="cx">
+          <img class="cx-bg hero-bg" id="heroBg" alt="" />
+          <div class="cx-shade"></div>
+          <div class="cx-top">
+            <div class="cx-tabs" data-pagetabs="home"></div>
+            <form class="search cx-search" id="quickSearch">
+              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+              <input id="quickSearchInput" placeholder="Rechercher un jeu…" autocomplete="off" />
+            </form>
+            <span class="cx-friends" id="cxFriends"></span>
+            <span class="cx-clock" id="cxClock"></span>
+          </div>
+          <div class="cx-tiles" id="cxTiles" aria-label="Tes jeux"></div>
+          <div class="cx-hero">
+            <span class="cx-tag" id="heroTag"></span>
+            <h1 class="cx-title" id="heroTitle">&nbsp;</h1>
+            <div class="cx-meta" id="heroMeta"></div>
+            <div class="cx-actions">
+              <button class="cx-play" id="heroPlay" type="button">Jouer</button>
+              <button class="cx-more" id="heroInfo" type="button" aria-label="Détails et serveurs">···</button>
+            </div>
+          </div>
+          <div class="cx-cards" id="cxCards"></div>
+          <div class="cx-pad-hints"><span><b>✕ / A</b> Valider</span><span><b>○ / B</b> Retour</span><span><b>△ / Y</b> Détails</span><span><b>L1 / R1</b> Pages</span><span><b>Share</b> Curseur libre</span></div>
+        </div>
+
+        <div id="homeRows"></div>
+      </section>
+
+      <!-- DISCOVER -->
+      <section class="view" id="view-discover">
+        <div class="page-head">
+          <h2>Découvrir</h2>
+          <form class="search" id="discoverForm">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+            <input id="discoverInput" placeholder="Rechercher un jeu, ou coller un lien / ID de place…" autocomplete="off" />
+          </form>
+        </div>
+        <div class="chips" id="discoverSorts"></div>
+        <div class="grid games" id="discoverGrid"></div>
+      </section>
+
+      <!-- CATALOG -->
+      <section class="view" id="view-catalog">
+        <div class="cat-head">
+          <div class="cat-tabs" role="tablist">
+            <button class="cat-tab active" type="button" data-cattab="shop">Boutique</button>
+            <button class="cat-tab" type="button" data-cattab="limiteds">Limiteds · Rolimons</button>
+            <button class="cat-tab" type="button" data-cattab="avatar">Mon avatar</button>
+          </div>
+          <form class="search" id="catalogForm">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+            <input id="catalogInput" placeholder="Rechercher un objet, un style…" autocomplete="off" />
+          </form>
+        </div>
+
+        <div id="catShop">
+          <div class="cat-bar">
+            <div class="chips cat-chips" id="catalogCats">
+              <button class="chip active" data-cat="1"><svg class="ic" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg>Tout</button>
+              <button class="chip" data-cat="11"><svg class="ic" viewBox="0 0 24 24"><path d="M5 15c0-4 3-8 7-8s7 4 7 8"/><path d="M3 15h18"/></svg>Accessoires</button>
+              <button class="chip" data-cat="3"><svg class="ic" viewBox="0 0 24 24"><path d="M8.5 4 4 6.5l1.8 4L8 9.6V20h8V9.6l2.2.9 1.8-4L15.5 4a3.5 3.5 0 0 1-7 0z"/></svg>Vêtements</button>
+              <button class="chip" data-cat="4"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="6" r="2.5"/><path d="M8 21v-7l-2-4h12l-2 4v7"/></svg>Corps</button>
+              <button class="chip" data-cat="12"><svg class="ic" viewBox="0 0 24 24"><path d="M13 4a1.5 1.5 0 1 0 0 .1M9 20l2-5 3 2v4M7 12l3-3 3 1 2 3 3 1"/></svg>Animations</button>
+              <button class="chip" data-cat="2"><svg class="ic" viewBox="0 0 24 24"><path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.5 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/></svg>Collection</button>
+            </div>
+            <select id="catalogSort" class="select small" aria-label="Tri">
+              <option value="1">Plus favoris</option>
+              <option value="2">Meilleures ventes</option>
+              <option value="3">Récents</option>
+              <option value="4">Prix croissant</option>
+              <option value="5">Prix décroissant</option>
+              <option value="0">Pertinence</option>
+            </select>
+          </div>
+          <div class="grid items" id="catalogGrid"></div>
+          <div class="center"><button class="btn ghost" id="catalogMore" hidden>Charger plus</button></div>
+        </div>
+
+        <div id="catLimiteds" hidden>
+          <div class="cat-bar">
+            <form class="search roli-search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><input id="roliSearch" placeholder="Chercher un limited (nom ou sigle, ex. CF)…" autocomplete="off" /></form>
+            <span class="muted" id="roliCount"></span>
+            <select id="roliSort" class="select small" aria-label="Tri">
+              <option value="value">Valeur</option>
+              <option value="rap">RAP</option>
+              <option value="demand">Demande</option>
+              <option value="name">Nom</option>
+            </select>
+            <button class="btn small" type="button" id="roliSite">Ouvrir Rolimons</button>
+          </div>
+          <div class="grid items" id="roliGrid"></div>
+          <div class="center"><button class="btn ghost" type="button" id="roliMore" hidden>Charger plus</button></div>
+          <p class="muted small-note">Valeurs et demande : Rolimons (rolimons.com). RAP : prix moyen récent.</p>
+        </div>
+
+        <div id="catAvatar" hidden>
+          <div class="av">
+            <div class="av-stage">
+              <div class="av-frame" id="avFrame"><img id="avPreview" alt="Aperçu de ton avatar" /><div class="av-loading" id="avLoading" hidden></div><button class="av-3d" type="button" id="av3d" aria-pressed="false">3D</button><div class="av-3dhint" id="av3dHint"></div></div>
+              <div class="av-state" id="avState">Ton avatar Roblox</div>
+              <div class="av-actions">
+                <button class="btn primary" type="button" id="avSave" disabled>Enregistrer sur Roblox</button>
+                <button class="btn ghost" type="button" id="avReset" disabled>Annuler</button>
+              </div>
+            </div>
+            <div class="av-panel">
+              <div class="chips av-tabs" id="avTabs"></div>
+              <div class="av-grid" id="avGrid"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- NEWS -->
+      <section class="view" id="view-news">
+        <div class="page-head"><h2>Nouveautés Roblox</h2></div>
+        <div class="row-head"><h3>Annonces officielles</h3><span class="muted">DevForum Roblox · en anglais</span></div>
+        <div class="news-grid" id="newsPosts"></div>
+        <div id="newsGames"></div>
+        <div class="row-head"><h3>Nouveaux dans le catalogue</h3><button class="btn ghost small" type="button" id="newsMoreItems">Tout voir</button></div>
+        <div class="grid items" id="newsItems"></div>
+      </section>
+
+      <!-- TRADING -->
+      <section class="view" id="view-trading">
+        <div class="page-head"><h2>Trading</h2><button class="btn small" type="button" data-goto-url="https://www.roblox.com/trades">Mes échanges sur Roblox</button></div>
+        <div class="chips" id="tradeTabs"></div>
+        <div class="split">
+          <div class="split-list" id="tradeList"></div>
+          <div class="split-main" id="tradeDetail"></div>
+        </div>
+      </section>
+
+      <!-- COMMUNITY -->
+      <section class="view" id="view-community">
+        <div class="page-head"><h2>Communauté</h2>
+          <form class="search" id="comSearch"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><input id="comSearchInput" placeholder="Chercher une communauté…" autocomplete="off" /></form>
+        </div>
+        <div class="split">
+          <div class="split-list"><div id="comSearchResults"></div><div class="side-section">Mes communautés</div><div id="comList"></div></div>
+          <div class="split-main" id="comDetail"></div>
+        </div>
+      </section>
+
+      <!-- FRIENDS -->
+      <section class="view" id="view-friends">
+        <div class="page-head">
+          <h2>Amis</h2>
+          <form class="search" id="friendSearchForm">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+            <input id="friendSearch" placeholder="Rechercher un ami…" autocomplete="off" />
+          </form>
+        </div>
+        <div class="friend-bar">
+          <div class="chips" id="friendTabs" style="margin:0">
+            <button class="chip active" data-ftab="all">Tous</button>
+            <button class="chip" data-ftab="online">En ligne</button>
+            <button class="chip" data-ftab="ingame">En jeu</button>
+            <button class="chip" data-ftab="fav">★ Favoris</button>
+            <button class="chip" data-ftab="requests">Demandes <span class="pill" id="requestCount"></span></button>
+          </div>
+          <select class="select small" id="friendSort" aria-label="Trier les amis">
+            <option value="status">Statut (en jeu d'abord)</option>
+            <option value="favorites">Favoris d'abord</option>
+            <option value="recent">Vus récemment</option>
+            <option value="az">Nom A → Z</option>
+            <option value="za">Nom Z → A</option>
+          </select>
+        </div>
+        <p class="muted small-note" id="friendSummary"></p>
+        <div class="friend-grid" id="friendGrid"></div>
+      </section>
+
+      <!-- PLAYERS -->
+      <section class="view" id="view-players">
+        <div class="page-head">
+          <h2>Joueurs</h2>
+          <form class="search" id="playerForm">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+            <input id="playerInput" placeholder="Nom d'utilisateur Roblox…" autocomplete="off" />
+          </form>
+        </div>
+        <div id="playerResult">
+          <div class="empty">Cherche un joueur pour voir son avatar, ses stats et ses jeux.</div>
+        </div>
+      </section>
+
+      <!-- INSTANCES -->
+      <section class="view" id="view-instances">
+        <div class="page-head"><h2>Instances</h2></div>
+        <div class="cards-2">
+          <div class="card">
+            <div class="card-row">
+              <div>
+                <h3>Multi-instance</h3>
+                <p class="muted">Lance plusieurs clients Roblox en même temps — idéal avec plusieurs comptes. Ferme tous les clients avant de l'activer.</p>
+              </div>
+              <label class="switch"><input type="checkbox" id="multiToggle" /><span></span></label>
+            </div>
+            <p class="tag warn">Expérimental — Roblox peut changer ce mécanisme à tout moment.</p>
+          </div>
+          <div class="card">
+            <h3>Installation</h3>
+            <dl class="kv" id="installInfo"></dl>
+            <button class="btn ghost small" id="openFolder">Ouvrir le dossier Roblox</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-row">
+            <h3>Clients en cours <span class="muted" id="instCount"></span></h3>
+            <button class="btn danger small" id="killAll">Tout fermer</button>
+          </div>
+          <div id="instList" class="inst-list"></div>
+        </div>
+      </section>
+
+      <!-- ACCOUNTS -->
+      <section class="view" id="view-accounts">
+        <div class="page-head">
+          <h2>Comptes</h2>
+          <button class="btn primary" id="addAccount"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Ajouter un compte</button>
+        </div>
+        <div class="grid accounts" id="accountsGrid"></div>
+        <div class="card info">
+          <h3>Comment fonctionne la connexion</h3>
+          <p class="muted">Tu te connectes sur la vraie page <b>roblox.com</b>, dans une fenêtre séparée. Stellar ne voit jamais ton mot de passe : il garde seulement la session Roblox, isolée par compte et stockée uniquement sur ce PC. Retirer un compte le déconnecte aussi côté Roblox.</p>
+        </div>
+      </section>
+
+      <!-- MESSAGES (Roblox chat) -->
+      <section class="view" id="view-messages">
+        <div class="chat">
+          <div class="chat-list">
+            <div class="chat-list-head"><b>Messages</b><button class="btn ghost small" id="chatNew">Nouveau</button></div>
+            <div id="chatConvos"></div>
+          </div>
+          <div class="chat-main">
+            <div class="chat-head" id="chatHead"></div>
+            <div class="chat-msgs" id="chatMsgs"></div>
+            <form class="chat-input" id="chatForm" hidden>
+              <input id="chatText" maxlength="500" autocomplete="off" placeholder="Envoyer un message" />
+              <button class="btn primary" type="submit">Envoyer</button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- MODS -->
+      <section class="view" id="view-mods">
+        <div class="page-head">
+          <div>
+            <h2>Mods</h2>
+            <p class="muted" style="margin:4px 0 0">Personnalise Roblox. Tout est réversible et réappliqué à chaque lancement. Relance Roblox pour voir les changements.</p>
+          </div>
+          <button class="btn primary" id="applyMods">Appliquer maintenant</button>
+        </div>
+
+        <div class="card music-card">
+          <div class="card-row">
+            <div>
+              <h3>Lecteur de musique <span class="new-tag">Nouveau</span></h3>
+              <p class="muted" style="margin:0">Spotify, Deezer, YouTube dans le navigateur… Contrôle ta musique sans quitter Roblox, avec tes propres raccourcis.</p>
+            </div>
+          </div>
+          <div class="music-now">
+            <div class="music-cover" id="musicCover"><svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div>
+            <div class="music-meta">
+              <div class="music-src" id="musicSrc"></div>
+              <div class="music-title" id="musicTitle">Aucune musique détectée</div>
+              <div class="muted music-artist" id="musicArtist">Lance Spotify, Deezer ou une vidéo.</div>
+            </div>
+            <div class="music-ctrls">
+              <button class="mbtn" data-mcmd="prev" title="Précédent" aria-label="Précédent"><svg viewBox="0 0 24 24"><path d="M19 20 9 12l10-8z"/><path d="M5 19V5"/></svg></button>
+              <button class="mbtn play" data-mcmd="toggle" title="Lecture / pause" aria-label="Lecture / pause" id="musicToggle"><svg viewBox="0 0 24 24"><path d="M7 4v16l13-8z"/></svg></button>
+              <button class="mbtn" data-mcmd="next" title="Suivant" aria-label="Suivant"><svg viewBox="0 0 24 24"><path d="m5 4 10 8-10 8z"/><path d="M19 5v14"/></svg></button>
+              <span class="music-sep"></span>
+              <button class="mbtn" data-mcmd="voldown" title="Volume −" aria-label="Volume moins"><svg viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 12h4"/></svg></button>
+              <button class="mbtn" data-mcmd="volup" title="Volume +" aria-label="Volume plus"><svg viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 12h5M18 9.5v5"/></svg></button>
+            </div>
+          </div>
+          <div class="sub-label">Raccourcis clavier · marchent même en jeu</div>
+          <div class="hotkeys" id="musicHotkeys"></div>
+          <div class="setting">
+            <div>
+              <div class="setting-title">Afficher la musique en jeu</div>
+              <div class="muted">Une petite carte en haut à droite quand la chanson change, seulement quand Roblox est au premier plan.</div>
+            </div>
+            <label class="switch"><input type="checkbox" id="musicPopup" /><span></span></label>
+          </div>
+          <button class="btn small" id="musicTestPopup">Tester l'affichage en jeu</button>
+          <div class="setting" style="margin-top:14px">
+            <div>
+              <div class="setting-title">Lecteur qui reste à l'écran <span class="new-tag">Nouveau</span></div>
+              <div class="muted">Un lecteur par-dessus le jeu, déplaçable, avec lecture, pause, suivant et volume. Il s'ouvre et se ferme avec le raccourci « Ouvrir / fermer le lecteur » ci-dessus ou un bouton de ta manette.</div>
+            </div>
+            <button class="btn small" type="button" id="playerToggle">Ouvrir le lecteur</button>
+          </div>
+          <div class="setting">
+            <div><div class="setting-title">Bouton de manette</div><div class="muted" id="padBtnState">Aucun bouton choisi.</div></div>
+            <span class="setting-actions"><button class="btn ghost small" type="button" id="padBtnClear">Retirer</button><button class="btn small" type="button" id="padBtnLearn">Choisir un bouton</button></span>
+          </div>
+          <p class="note-box">⚠️ En <b>plein écran</b> Roblox (F11), Windows cache toutes les autres fenêtres : la carte musique et la traînée du curseur ne peuvent pas s'afficher. Joue en fenêtre agrandie (appuie sur F11 dans Roblox pour sortir du plein écran) et tout s'affichera. Les raccourcis musique, eux, marchent dans les deux cas.</p>
+        </div>
+
+        <div class="card">
+          <div class="card-row">
+            <div><h3>Curseur</h3><p class="muted">Remplace le curseur de la souris en jeu. Ce sont de simples images : aucun impact sur les FPS.</p></div>
+            <label class="color-pick" title="Couleur du curseur et de sa lueur"><input type="color" id="cursorColor" /><span>Couleur</span></label>
+          </div>
+          <div class="sub-label">Classiques</div>
+          <div class="mod-grid" id="cursorGrid">
+            <button class="mod-tile" data-cursor="default"><span class="checker"><img alt="" /></span><b>Par défaut</b></button>
+            <button class="mod-tile" data-cursor="dot"><span class="checker"><img alt="" /></span><b>Point</b></button>
+            <button class="mod-tile" data-cursor="crosshair"><span class="checker"><img alt="" /></span><b>Viseur</b></button>
+            <button class="mod-tile" data-cursor="circle"><span class="checker"><img alt="" /></span><b>Cercle</b></button>
+            <button class="mod-tile" data-cursor="arrow"><span class="checker"><img alt="" /></span><b>Flèche fine</b></button>
+            <button class="mod-tile" data-cursor="custom"><span class="checker"><img alt="" /></span><b>Mon image…</b></button>
+          </div>
+          <div class="sub-label">Avec effets <span class="new-tag">Nouveau</span></div>
+          <div class="mod-grid" id="fxCursorGrid"></div>
+
+          <div class="sub-label">Traînée animée <span class="new-tag">Nouveau</span></div>
+          <p class="muted" style="margin:4px 0 10px">Des pétales, étoiles ou cœurs qui tombent derrière ta souris. Stellar les dessine dans une couche transparente par-dessus Roblox (rien n'est injecté dans le jeu), seulement quand Roblox est au premier plan. Stellar doit rester ouvert. Fonctionne quand la souris est libre (pas en vue à la 1re personne). Passe la souris sur l'aperçu pour essayer.</p>
+          <div class="trail-layout">
+            <div>
+              <div class="chips" id="trailChips"></div>
+              <div class="setting compact">
+                <div class="setting-title">Quantité</div>
+                <div class="fps-control"><input type="range" id="trailDensity" min="10" max="100" step="5" aria-label="Quantité de particules" style="width:140px" /><output id="trailDensityOut"></output></div>
+              </div>
+              <div class="setting compact">
+                <div class="setting-title">Taille</div>
+                <div class="fps-control"><input type="range" id="trailSize" min="50" max="200" step="10" aria-label="Taille des particules" style="width:140px" /><output id="trailSizeOut"></output></div>
+              </div>
+            </div>
+            <canvas class="trail-preview" id="trailPreview"></canvas>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-row">
+            <div>
+              <h3>Roue des emotes</h3>
+              <p class="muted">Choisis un thème, ou importe une roue trouvée sur Pinterest (PNG, JPG ou WebP) : elle est recadrée en rond automatiquement. Touche <kbd>.</kbd> en jeu.</p>
+            </div>
+            <button class="btn primary small" id="openStickers">✏️ Stickers</button>
+          </div>
+          <div class="emote-layout">
+            <div class="emote-side">
+              <div class="emote-stage"><div class="emote-preview big"><img id="emoteRing" alt="Aperçu de la roue des emotes" /></div></div>
+              <div class="setting compact">
+                <div class="setting-title">Opacité du thème</div>
+                <div class="fps-control"><input type="range" id="emoteOpacity" min="20" max="100" step="5" aria-label="Opacité du thème" style="width:110px" /><output id="emoteOpacityOut">90 %</output></div>
+              </div>
+              <div class="setting compact">
+                <div class="setting-title">Masquer les séparations de Roblox</div>
+                <label class="switch"><input type="checkbox" id="emoteHideLines" /><span></span></label>
+              </div>
+              <div class="sub-label">Couleur des séparations et du survol</div>
+              <div class="swatches" id="emoteSwatches">
+                <button class="swatch default" data-emote="" title="Par défaut">✕</button>
+                <button class="swatch" data-emote="#ffffff" style="--c:#ffffff" title="Blanc"></button>
+                <button class="swatch" data-emote="#8b7bff" style="--c:#8b7bff" title="Violet"></button>
+                <button class="swatch" data-emote="#4fd1ff" style="--c:#4fd1ff" title="Cyan"></button>
+                <button class="swatch" data-emote="#ff5cc8" style="--c:#ff5cc8" title="Rose"></button>
+                <button class="swatch" data-emote="#3ddc97" style="--c:#3ddc97" title="Vert"></button>
+                <button class="swatch" data-emote="#ffc94d" style="--c:#ffc94d" title="Or"></button>
+                <label class="color-pick small" title="Couleur perso"><input type="color" id="emoteColor" /></label>
+              </div>
+            </div>
+            <div class="theme-grid" id="themeGrid"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-row">
+            <div>
+              <h3>Police des textes</h3>
+              <p class="muted">Remplace la police de tous les textes de Roblox (menus, chat, interfaces des jeux). Certaines polices fantaisie n'ont pas les accents : Roblox les affiche alors avec sa police normale.</p>
+            </div>
+            <button class="btn small" id="pickFont">+ Ajouter ma police…</button>
+          </div>
+          <div class="font-preview" id="fontPreview">Salut ! Prêt à jouer ? 0123456789</div>
+          <p class="muted small-note" id="fontName" style="margin:8px 0 0">Police de Roblox</p>
+          <div id="fontList"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-row">
+            <div><h3>Son de mort</h3><p class="muted" id="deathStatus">Son de Roblox par défaut.</p></div>
+            <span>
+              <button class="btn ghost small" id="clearDeath">Défaut</button>
+              <button class="btn small" id="oofDeath">Oof classique</button>
+              <button class="btn small" id="pickDeath">Mon son .ogg…</button>
+            </span>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Sons du personnage <span class="new-tag">Nouveau</span></h3>
+          <p class="muted">Remplace ou coupe les sons de ton avatar dans tous les jeux (MP3, OGG ou WAV, 5 Mo max). Les jeux qui ont leurs propres sons ne changent pas.</p>
+          <div class="sound-slots" id="charSounds"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-row">
+            <div>
+              <h3>Sons de clavier <span class="new-tag">Nouveau</span></h3>
+              <p class="muted">Un son de clavier mécanique quand tu tapes. Stellar doit rester ouvert (même réduit). Seul le type de touche est utilisé, jamais ce que tu écris.</p>
+            </div>
+            <label class="switch"><input type="checkbox" id="keySounds" /><span></span></label>
+          </div>
+          <div class="chips" id="keyProfiles" style="margin:12px 0 4px"></div>
+          <div class="setting">
+            <div>
+              <div class="setting-title">Ignorer les touches de déplacement</div>
+              <div class="muted">ZQSD / WASD, flèches, espace, Maj et Ctrl restent silencieux, sinon ça fait du bruit en continu quand tu marches ou sautes.</div>
+            </div>
+            <label class="switch"><input type="checkbox" id="keyIgnoreGame" /><span></span></label>
+          </div>
+          <div class="setting">
+            <div class="setting-title">Volume</div>
+            <div class="fps-control"><input type="range" id="keyVolume" min="0" max="100" step="5" aria-label="Volume des sons de clavier" /><output id="keyVolumeOut">60 %</output></div>
+          </div>
+          <div class="setting">
+            <div>
+              <div class="setting-title">Seulement quand Roblox est au premier plan</div>
+              <div class="muted">Le son ne joue que quand tu tapes dans la fenêtre Roblox, pas dans Discord ou ton navigateur.</div>
+            </div>
+            <label class="switch"><input type="checkbox" id="keyRobloxOnly" /><span></span></label>
+          </div>
+          <button class="btn small" id="keyTest">🔊 Tester</button>
+        </div>
+      </section>
+
+      <!-- FILTERS -->
+      <section class="view" id="view-filters">
+        <div class="page-head">
+          <div>
+            <h2>Filtres</h2>
+            <p class="muted" style="margin:4px 0 0">Une image plus belle sans faire ramer ton PC, avec les outils officiels de ta carte graphique. Rien n'est injecté dans Roblox : aucun risque de ban.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-row">
+            <div><h3>Carte graphique</h3><p class="muted" id="gpuList">Détection…</p></div>
+            <button class="btn ghost small" id="gpuCheck">Vérifier</button>
+          </div>
+          <div class="gpu-state" id="gpuState"></div>
+          <div class="setting" id="gpuForceRow">
+            <div>
+              <div class="setting-title">Toujours utiliser la carte NVIDIA pour Roblox</div>
+              <div class="muted">Réglage Windows « Hautes performances » pour Roblox, réappliqué à chaque mise à jour. Évite que Roblox tourne sur la puce Intel, beaucoup plus lente. Réversible.</div>
+            </div>
+            <label class="switch"><input type="checkbox" id="gpuForce" /><span></span></label>
+          </div>
+        </div>
+
+        <div class="card" id="nvidiaGuide">
+          <div class="card-row">
+            <div>
+              <h3>Le réglage « un petit peu » (marche dans Roblox)</h3>
+              <p class="muted">Les filtres <kbd>Alt</kbd> + <kbd>F3</kbd> de NVIDIA ne marchent que dans les jeux que NVIDIA prend en charge. Si le panneau affiche « Démarrer un jeu pris en charge » avec Roblox ouvert, Roblox n'en fait pas partie. Ces deux réglages du pilote marchent dans tous les jeux, Roblox compris :</p>
+            </div>
+            <button class="btn small" id="openNvidia">Ouvrir l'appli NVIDIA</button>
+          </div>
+          <div class="presets two">
+            <div class="preset good">
+              <div class="preset-head"><b>🎨 Couleurs plus vives</b><span class="pill ok">0 % de FPS</span></div>
+              <p>Appli NVIDIA → <b>Système</b> → <b>Affichage</b> → <b>Vibrance numérique</b> : passe de 50 % à environ <b>65 %</b>.</p>
+              <p class="muted">S'applique à tout l'écran, pas seulement à Roblox. Remets 50 % pour revenir comme avant.</p>
+            </div>
+            <div class="preset good">
+              <div class="preset-head"><b>🔍 Image plus nette</b><span class="pill ok">~1 % de FPS</span></div>
+              <p>Appli NVIDIA → <b>Graphismes</b> → <b>Paramètres de programme</b> → ajoute <b>Roblox</b> → <b>Mise à l'échelle de l'image</b> : active-la et règle la <b>netteté</b> vers <b>30-40 %</b>.</p>
+              <p class="muted">C'est ce qui ressemble le plus à l'effet « DLSS ». Les noms peuvent légèrement changer selon la version de l'appli.</p>
+            </div>
+          </div>
+          <p class="muted small-note">Les gros « shaders » qui font ramer ajoutent des effets lourds (éclairage simulé, occlusion ambiante, profondeur de champ) par-dessus le jeu. Ces deux réglages-là n'en font pas partie. Astuce PC portable : branche le chargeur, sinon la carte graphique est bridée.</p>
+        </div>
+
+        <div class="card" id="otherGuide" hidden>
+          <h3>Pas de carte NVIDIA détectée</h3>
+          <p class="muted">Sur AMD : logiciel Adrenalin → Jeux → Graphismes → active <b>Radeon Image Sharpening</b> (netteté ~50 %), puis Affichage → <b>Saturation</b> +10 à 20. Sur une puce Intel seule, garde le profil <b>Performance</b> dans Paramètres.</p>
+        </div>
+      </section>
+
+      <!-- SETTINGS -->
+      <section class="view" id="view-settings">
+        <div class="page-head"><h2>Paramètres</h2></div>
+        <div class="card">
+          <h3>Apparence de Stellar</h3>
+          <p class="muted" style="margin:0">Choisis le thème du launcher. Tout change d'un coup : fonds, cartes, boutons, menus.</p>
+          <div class="themes" id="themeCards"></div>
+          <div class="setting" style="margin-top:14px">
+            <div>
+              <div class="setting-title">Couleur d'accent</div>
+              <div class="muted">« Auto » garde la couleur du thème.</div>
+            </div>
+            <div class="swatches" id="accentSwatches" style="margin:0">
+              <button class="swatch default" data-accent="auto" title="Couleur du thème">Auto</button>
+              <button class="swatch" data-accent="violet" style="--c:linear-gradient(135deg,#8b7bff,#4fd1ff)" title="Violet"></button>
+              <button class="swatch" data-accent="cyan" style="--c:linear-gradient(135deg,#22d3ee,#3ddc97)" title="Cyan"></button>
+              <button class="swatch" data-accent="rose" style="--c:linear-gradient(135deg,#ff5cc8,#ffa3d7)" title="Rose"></button>
+              <button class="swatch" data-accent="vert" style="--c:linear-gradient(135deg,#3ddc97,#b6f36a)" title="Vert"></button>
+              <button class="swatch" data-accent="orange" style="--c:linear-gradient(135deg,#ff8a3d,#ffd04d)" title="Orange"></button>
+              <button class="swatch" data-accent="rouge" style="--c:linear-gradient(135deg,#ff4d6d,#ff9a6b)" title="Rouge"></button>
+            </div>
+          </div>
+          <div class="setting">
+            <div>
+              <div class="setting-title">Notifications des amis favoris</div>
+              <div class="muted">Une notification Windows quand un ami ★ se connecte ou lance un jeu.</div>
+            </div>
+            <label class="switch"><input type="checkbox" id="notifyFavorites" /><span></span></label>
+          </div>
+          <div class="setting">
+            <div>
+              <div class="setting-title">Sons de l'interface</div>
+              <div class="muted">Petits sons quand tu passes sur un bouton, valides ou reviens en arrière (souris et manette).</div>
+            </div>
+            <label class="switch"><input type="checkbox" id="uiSounds" /><span></span></label>
+          </div>
+          <div class="chips" id="soundPacks" style="margin:4px 0 0">
+            <button class="chip" type="button" data-pack="soft">Doux</button>
+            <button class="chip" type="button" data-pack="console">Console</button>
+            <button class="chip" type="button" data-pack="bubble">Bulle</button>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Tes réglages Roblox</h3>
+          <p class="muted">Lus directement dans Roblox. Ils se changent en jeu : <kbd>Échap</kbd> → Paramètres (Fréquence d'images maximale, Qualité graphique). Roblox n'accepte plus qu'un launcher change la limite de FPS.</p>
+          <dl class="kv" id="robloxSettings"></dl>
+        </div>
+        <div class="card">
+          <h3>Profil graphique</h3>
+          <p class="muted">Un clic pour régler la qualité de tous tes jeux. Ça passe par les réglages officiels de Roblox : rien n'est injecté dans le jeu, donc aucun risque de ban. Plus le profil est élevé, plus il demande à ta carte graphique.</p>
+          <div class="profiles" id="profiles">
+            <button class="profile-card" data-profile="roblox"><span class="p-ico">🎮</span><b>Roblox</b><span>Réglages du jeu, rien de forcé</span></button>
+            <button class="profile-card" data-profile="performance"><span class="p-ico">⚡</span><b>Performance</b><span>Max de FPS, PC modestes</span></button>
+            <button class="profile-card" data-profile="balanced"><span class="p-ico">⚖️</span><b>Équilibré</b><span>Bonne image, fluide</span></button>
+            <button class="profile-card" data-profile="quality"><span class="p-ico">✨</span><b>Qualité</b><span>Textures max, MSAA 4×</span></button>
+            <button class="profile-card" data-profile="ultra"><span class="p-ico">💎</span><b>Ultra</b><span>Qualité 21/21, MSAA 4×</span></button>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Graphismes avancés</h3>
+          <p class="muted">Ces réglages remplacent ceux du profil.</p>
+          <div class="setting">
+            <div>
+              <div class="setting-title">Désactiver les ombres</div>
+              <div class="muted">Gros gain de FPS sur les cartes chargées.</div>
+            </div>
+            <label class="switch"><input type="checkbox" id="noShadows" /><span></span></label>
+          </div>
+          <div class="setting">
+            <div>
+              <div class="setting-title">Désactiver le post-traitement</div>
+              <div class="muted">Retire le flou, le bloom et les effets de couleur.</div>
+            </div>
+            <label class="switch"><input type="checkbox" id="noPostFx" /><span></span></label>
+          </div>
+          <div class="setting">
+            <div>
+              <div class="setting-title">Désactiver l'herbe</div>
+              <div class="muted">Plus de FPS sur les terrains avec de l'herbe.</div>
+            </div>
+            <label class="switch"><input type="checkbox" id="noGrass" /><span></span></label>
+          </div>
+          <div class="setting">
+            <div class="setting-title">Moteur de rendu</div>
+            <select class="select" id="renderer">
+              <option value="auto">Automatique</option>
+              <option value="d3d11">Direct3D 11</option>
+              <option value="vulkan">Vulkan</option>
+            </select>
+          </div>
+          <div class="setting">
+            <div class="setting-title">Anticrénelage (MSAA)</div>
+            <select class="select" id="msaa">
+              <option value="0">Automatique</option>
+              <option value="1">Désactivé</option>
+              <option value="2">2×</option>
+              <option value="4">4×</option>
+              <option value="8">8× (peut cacher les icônes d’objets en jeu)</option>
+            </select>
+          </div>
+          <div class="setting">
+            <div class="setting-title">Qualité des textures</div>
+            <select class="select" id="textureQuality">
+              <option value="-1">Automatique</option>
+              <option value="0">Basse</option>
+              <option value="1">Moyenne</option>
+              <option value="2">Haute</option>
+              <option value="3">Maximale</option>
+            </select>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-row">
+            <div>
+              <h3>Éditeur de FastFlags</h3>
+              <p class="muted">Pour les experts : ajoute tes propres flags en JSON. Ils passent en dernier et remplacent tout le reste.</p>
+            </div>
+            <button class="btn ghost small" id="showFlags">Voir les flags appliqués</button>
+          </div>
+          <textarea class="code" id="flagsEditor" spellcheck="false" placeholder='{ "DFIntTaskSchedulerTargetFps": 240 }'></textarea>
+          <div class="card-row" style="margin-top:10px">
+            <span class="muted small-note" id="flagsStatus">Roblox n'applique que les flags de sa liste autorisée ; les autres sont ignorés sans danger.</span>
+            <button class="btn primary small" id="saveFlags">Enregistrer</button>
+          </div>
+          <pre class="code" id="flagsPreview" hidden></pre>
+        </div>
+        <div class="card support-card">
+          <div class="support-row">
+            <div>
+              <h3>Soutenir Stellar 💜</h3>
+              <p class="muted">Stellar est gratuit. Si tu l'aimes, tu peux soutenir son créateur avec un petit don sur PayPal (Tomokari35).</p>
+            </div>
+            <button class="btn primary" type="button" data-goto-url="https://www.paypal.com/paypalme/Tomokari35">Faire un don avec PayPal</button>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Sons de Stellar et veille</h3>
+          <div class="setting">
+            <div><div class="setting-title">Le son Stellar</div><div class="muted">Le jingle de Stellar au démarrage et quand tu lances un jeu.</div></div>
+            <span class="setting-actions"><button class="btn small" type="button" id="playSignature">Écouter</button><label class="switch"><input type="checkbox" id="stellarSound" /><span></span></label></span>
+          </div>
+          <div class="setting">
+            <div><div class="setting-title">Musique du menu</div><div class="muted">Une ambiance douce sur l'accueil, comme le menu d'une console.</div></div>
+            <label class="switch"><input type="checkbox" id="menuMusic" /><span></span></label>
+          </div>
+          <div class="setting">
+            <div><div class="setting-title">Écran de veille</div><div class="muted">Quand tu ne touches à rien sur l'accueil, tes jeux défilent en grand.</div></div>
+            <label class="switch"><input type="checkbox" id="idleEnabled" /><span></span></label>
+          </div>
+          <div class="setting">
+            <div><div class="setting-title">Après</div></div>
+            <div class="fps-control"><input type="range" id="idleMinutes" min="1" max="30" step="1" aria-label="Minutes avant la veille" style="width:180px" /><output id="idleMinutesOut"></output></div>
+          </div>
+          <div class="setting">
+            <div><div class="setting-title">Jeux affichés</div></div>
+            <div class="chips" id="idleSource" style="margin:0">
+              <button class="chip" type="button" data-src="recent">Mes jeux récents</button>
+              <button class="chip" type="button" data-src="favorites">Mes favoris</button>
+              <button class="chip" type="button" data-src="trending">Tendances</button>
+            </div>
+          </div>
+          <div class="setting">
+            <div><div class="setting-title">Son pendant la veille</div></div>
+            <span class="setting-actions"><button class="btn small" type="button" id="previewIdle">Aperçu</button><label class="switch"><input type="checkbox" id="idleSound" /><span></span></label></span>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Manette</h3>
+          <div class="setting">
+            <div>
+              <div class="setting-title">Bouton « Afficher Stellar »</div>
+              <div class="muted" id="launcherPadState">Aucun bouton choisi. Au clavier : Ctrl + Maj + S (modifiable dans Mods › Lecteur de musique › Raccourcis).</div>
+            </div>
+            <span class="setting-actions"><button class="btn ghost small" type="button" id="launcherPadClear">Retirer</button><button class="btn small" type="button" id="launcherPadLearn">Choisir un bouton</button></span>
+          </div>
+          <div class="setting">
+            <div><div class="setting-title">Curseur libre</div><div class="muted">Appuie sur ce bouton pour piloter une vraie souris avec le stick gauche : ✕/A clique, le stick droit fait défiler, le même bouton revient à la navigation normale.</div></div>
+            <select class="select" id="padCursorButton" aria-label="Bouton du curseur libre">
+              <option value="8">Share / Create / View</option>
+              <option value="17">Pavé tactile (PS4 / PS5)</option>
+              <option value="10">L3 (clic du stick gauche)</option>
+              <option value="11">R3 (clic du stick droit)</option>
+              <option value="16">Bouton PS / Xbox</option>
+            </select>
+          </div>
+          <div class="setting">
+            <div><div class="setting-title">Vitesse du curseur</div></div>
+            <div class="fps-control"><input type="range" id="padCursorSpeed" min="0.4" max="2.5" step="0.1" aria-label="Vitesse du curseur" style="width:180px" /><output id="padCursorSpeedOut"></output></div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Barre de navigation</h3>
+          <div class="setting">
+            <div><div class="setting-title">Position de la barre</div><div class="muted">À gauche, à droite, en haut ou en bas de la fenêtre.</div></div>
+            <div class="chips" id="barPos" style="margin:0">
+              <button class="chip" type="button" data-bar="left">Gauche</button>
+              <button class="chip" type="button" data-bar="right">Droite</button>
+              <button class="chip" type="button" data-bar="top">Haut</button>
+              <button class="chip" type="button" data-bar="bottom">Bas</button>
+            </div>
+          </div>
+          <div class="setting-title" style="margin-top:14px">Boutons affichés</div>
+          <div class="nav-picks" id="navPicks"></div>
+        </div>
+        <div class="card">
+          <h3>Launcher</h3>
+          <div class="setting">
+            <div class="setting-title">Réduire Stellar au lancement d'un jeu</div>
+            <label class="switch"><input type="checkbox" id="minimizeOnLaunch" /><span></span></label>
+          </div>
+          <div class="setting">
+            <div>
+              <div class="setting-title">Animation de téléportation</div>
+              <div class="muted">Un effet « tu es aspiré dans le jeu » quand tu lances une partie.</div>
+            </div>
+            <label class="switch"><input type="checkbox" id="launchFx" /><span></span></label>
+          </div>
+          <div class="setting">
+            <div>
+              <div class="setting-title">Fermer Roblox quand je quitte une partie</div>
+              <div class="muted">Dès que tu quittes un jeu, Roblox se ferme et Stellar revient à l'écran. Avec plusieurs Roblox ouverts, Stellar revient seulement, sans rien fermer.</div>
+            </div>
+            <label class="switch"><input type="checkbox" id="closeOnLeave" /><span></span></label>
+          </div>
+        </div>
+        <p class="muted small-note">Les réglages sont écrits dans <code>ClientSettings/ClientAppSettings.json</code> et réappliqués à chaque lancement (Roblox les efface à chaque mise à jour). Tes autres flags sont conservés.</p>
+      </section>
+    </main>
+
+    <!-- ============ FRIENDS RAIL ============ -->
+    <aside class="rail">
+      <div class="rail-head">
+        <h3>Amis</h3>
+        <span class="pill" id="friendsCount"></span>
+      </div>
+      <div class="rail-body" id="friendsList"></div>
+    </aside>
+  </div>
+
+  <!-- GAME MODAL -->
+  <div class="modal" id="gameModal" hidden>
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="gmName">
+      <div class="gm-banner"><img id="gmBanner" alt="" /><div class="gm-banner-shade"></div></div>
+      <button class="modal-x" data-close aria-label="Fermer">×</button>
+      <div class="gm-top">
+        <img class="gm-icon" id="gmIcon" alt="" />
+        <div class="gm-info">
+          <h2 id="gmName"></h2>
+          <p class="muted" id="gmCreator"></p>
+          <div class="gm-stats" id="gmStats"></div>
+        </div>
+      </div>
+      <div class="gm-actions">
+        <button class="btn primary big" id="gmPlay"><svg viewBox="0 0 24 24"><path d="M7 4v16l13-8z"/></svg><span>Jouer</span></button>
+        <button class="btn ghost icon" id="gmFav" aria-label="Favori"><svg viewBox="0 0 24 24"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg></button>
+        <button class="btn ghost" id="gmWeb">Voir sur roblox.com</button>
+        <span class="muted gm-as" id="gmAs"></span>
+      </div>
+      <p class="gm-desc" id="gmDesc"></p>
+      <div class="card-row server-tools">
+        <h3>Serveurs publics</h3>
+        <div class="hero-actions">
+          <button class="btn small" id="gmBestPing" title="Le serveur avec le meilleur ping qui a de la place">⚡ Meilleur ping</button>
+          <button class="btn small" id="gmEmptiest" title="Le serveur le moins rempli">🍃 Le plus vide</button>
+          <select class="select small" id="gmServerSort" aria-label="Trier les serveurs">
+            <option value="full">Plus de joueurs</option>
+            <option value="empty">Moins de joueurs</option>
+            <option value="ping">Meilleur ping</option>
+          </select>
+          <button class="btn ghost small" id="gmRefresh">Actualiser</button>
+        </div>
+      </div>
+      <form class="gm-join" id="gmJoinForm">
+        <input id="gmJoinInput" placeholder="Rejoindre : @pseudo, ID joueur ou ID de serveur…" autocomplete="off" aria-label="Rejoindre un joueur ou un serveur" />
+        <button class="btn small primary" type="submit">Rejoindre</button>
+      </form>
+      <div id="gmServers" class="servers"></div>
+    </div>
+  </div>
+
+    <!-- STICKER EDITOR -->
+  <div class="modal" id="itemModal" hidden>
+    <div class="modal-backdrop" data-itemclose></div>
+    <div class="modal-box item-box" role="dialog" aria-modal="true" aria-labelledby="ivName">
+      <button class="modal-x" data-itemclose aria-label="Fermer">×</button>
+      <div class="iv-stage" id="ivStage"><img id="ivImg" alt="" /><div class="iv-hint" id="ivHint"></div></div>
+      <div class="iv-info">
+        <div class="iv-type" id="ivType"></div>
+        <h2 id="ivName"></h2>
+        <div class="muted" id="ivCreator"></div>
+        <div class="iv-price" id="ivPrice"></div>
+        <div class="iv-roli" id="ivRoli"></div>
+        <div class="iv-actions">
+          <button class="btn primary" type="button" id="ivTry">Essayer sur mon avatar</button>
+          <button class="btn" type="button" id="ivOpen">Voir sur Roblox</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="stickerModal" hidden>
+    <div class="modal-backdrop" data-sticker-close></div>
+    <div class="modal-box sticker-box" role="dialog" aria-modal="true" aria-labelledby="stickerTitle">
+      <button class="modal-x" data-sticker-close aria-label="Fermer">×</button>
+      <h2 id="stickerTitle">Stickers de la roue</h2>
+      <p class="muted">Clique sur un sticker pour l'ajouter, puis fais-le glisser <b>n'importe où dans le carré</b> : sur la roue, au centre ou dans les coins autour. Ils passent par-dessus le thème et les séparations. Molette = taille, <kbd>Suppr</kbd> = enlever. Au centre, Roblox écrit le nom de l'emote par-dessus.</p>
+      <div class="sticker-layout">
+        <canvas id="stickerCanvas" class="sticker-canvas"></canvas>
+        <div class="sticker-side">
+          <div class="sub-label">Stickers</div>
+          <div class="sticker-palette" id="stickerPalette"></div>
+          <button class="btn small" id="stickerImage" style="margin-top:8px">+ Mon image…</button>
+          <div class="sub-label">Sticker sélectionné</div>
+          <div class="setting compact">
+            <div class="setting-title">Taille</div>
+            <input type="range" id="stickerSize" min="3" max="60" step="1" aria-label="Taille du sticker" style="width:150px" />
+          </div>
+          <div class="setting compact">
+            <div class="setting-title">Rotation</div>
+            <input type="range" id="stickerRot" min="-180" max="180" step="5" aria-label="Rotation du sticker" style="width:150px" />
+          </div>
+          <div class="hero-actions">
+            <button class="btn ghost small" id="stickerDelete">Supprimer</button>
+            <button class="btn ghost small" id="stickerClear">Tout effacer</button>
+          </div>
+        </div>
+      </div>
+      <div class="sticker-footer">
+        <button class="btn ghost" data-sticker-close>Annuler</button>
+        <button class="btn primary" id="stickerSave">Enregistrer dans Roblox</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toasts" id="toasts" aria-live="polite"></div>
+
+  <script src="art.js"></script>
+  <script src="keysounds.js"></script>
+  <script src="fx.js"></script>
+  <script src="stickers.js"></script>
+  <script src="sfx.js"></script>
+  <script src="stellar-sound.js"></script>
+  <script src="app.js"></script>
+  <script src="chat.js"></script>
+  <script src="news.js"></script>
+  <script src="avatar.js"></script>
+  <script src="rolimons.js"></script>
+  <script src="itemview.js"></script>
+  <script src="social.js"></script>
+  <script src="join.js"></script>
+  <script type="module" src="viewer3d.js"></script>
+  <script src="console.js"></script>
+  <script src="extras.js"></script>
+</body>
+</html>

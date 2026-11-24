@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src data:; style-src 'unsafe-inline'; script-src 'self'" />
+  <title>Stellar musique</title>
+  <style>
+    html, body { margin: 0; height: 100%; background: transparent; overflow: hidden; font: 14px/1.35 "Segoe UI Variable Text", "Segoe UI", sans-serif; }
+    .card { position: absolute; inset: 6px; display: flex; align-items: center; gap: 12px; padding: 10px 14px 10px 10px; border-radius: 16px;
+      background: rgba(16, 16, 22, .92); color: #f2f2f7; border: 1px solid rgba(255, 255, 255, .1); box-shadow: 0 10px 30px rgba(0, 0, 0, .4);
+      opacity: 0; transform: translateY(-8px); transition: opacity .25s, transform .25s; }
+    .card.on { opacity: 1; transform: none; }
+    body[data-theme="pastel"] .card { background: rgba(255, 246, 251, .96); color: #4b2a42; border-color: rgba(200, 110, 160, .3); }
+    body[data-theme="light"] .card { background: rgba(255, 255, 255, .96); color: #17171f; border-color: rgba(0, 0, 0, .1); }
+    body[data-theme="console"] .card { background: rgba(13, 18, 32, .96); color: #eef1fb; border-color: rgba(255, 255, 255, .1); border-radius: 18px; }
+    body[data-theme="discord"] .card { background: rgba(49, 51, 56, .97); color: #dbdee1; border-color: rgba(255, 255, 255, .08); border-radius: 8px; }
+    .cover { width: 62px; height: 62px; border-radius: 12px; flex: none; object-fit: cover; background: linear-gradient(135deg, #8c7bff, #ff86c3); display: grid; place-items: center; font-size: 26px; }
+    .meta { min-width: 0; flex: 1; }
+    .src { font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; opacity: .6; }
+    .title { font-weight: 700; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .artist { opacity: .7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .state { font-size: 22px; flex: none; }
+  </style>
+</head>
+<body>
+  <div class="card" id="card">
+    <div class="cover" id="cover">🎵</div>
+    <div class="meta"><div class="src" id="src"></div><div class="title" id="title"></div><div class="artist" id="artist"></div></div>
+    <div class="state" id="state"></div>
+  </div>
+  <script src="music-popup.js"></script>
+</body>
+</html>

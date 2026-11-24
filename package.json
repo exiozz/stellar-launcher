@@ -1,0 +1,57 @@
+{
+  "name": "stellar-launcher",
+  "productName": "Stellar",
+  "version": "3.12.0",
+  "description": "Stellar : un launcher Roblox façon console, avec mods, manette, chat, catalogue 3D, Rolimons, musique et plus.",
+  "author": "Stellar",
+  "main": "main.js",
+  "private": true,
+  "scripts": {
+    "prestart": "node scripts/ensure-deps.js",
+    "start": "electron .",
+    "predist": "node scripts/ensure-deps.js",
+    "dist": "electron-builder --win nsis"
+  },
+  "build": {
+    "appId": "app.orbit.launcher",
+    "npmRebuild": false,
+    "productName": "Stellar",
+    "files": [
+      "main.js",
+      "accounts.js",
+      "mods.js",
+      "focus.js",
+      "media.js",
+      "playtime.js",
+      "preload.js",
+      "preload-overlay.js",
+      "renderer/**/*",
+      "build/icon.png",
+      "package.json"
+    ],
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "build/icon.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Stellar"
+    }
+  },
+  "devDependencies": {
+    "electron": "^45.4.1",
+    "electron-builder": "^26.18.0",
+    "three": "^0.170.0"
+  },
+  "dependencies": {
+    "uiohook-napi": "^1.5.5"
+  }
+}
